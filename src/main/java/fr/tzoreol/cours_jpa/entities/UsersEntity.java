@@ -4,14 +4,13 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-@SecondaryTable(name="jobs")
 public class UsersEntity {
     @Id
-    @Column(name = "username", nullable = true, length = 32)
+    @Column(name = "login", nullable = false, length = 15)
     private String username;
 
-    @Column(table = "jobs")
-    private String job;
+    @Transient
+    private String doNotInsert;
 
     public String getUsername() {
         return username;
@@ -21,11 +20,11 @@ public class UsersEntity {
         this.username = username;
     }
 
-    public String getJob() {
-        return job;
+    public String getDoNotInsert() {
+        return doNotInsert;
     }
 
-    public void setJob(String job) {
-        this.job = job;
+    public void setDoNotInsert(String doNotInsert) {
+        this.doNotInsert = doNotInsert;
     }
 }
