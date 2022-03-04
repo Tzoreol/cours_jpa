@@ -1,10 +1,11 @@
 package fr.tzoreol.cours_jpa;
 
-import fr.tzoreol.cours_jpa.entities.UserPK;
+import fr.tzoreol.cours_jpa.entities.MesssageEntity;
+import fr.tzoreol.cours_jpa.entities.PasswordEntity;
+import fr.tzoreol.cours_jpa.entities.RoleEntity;
 import fr.tzoreol.cours_jpa.entities.UsersEntity;
 
 import java.io.*;
-import java.sql.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -25,12 +26,27 @@ public class HelloServlet extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
-        UserPK userPK = new UserPK();
-        userPK.setFirstname("Alice");
-        userPK.setLastname("Adams");
+        PasswordEntity password = new PasswordEntity();
+        password.setPassword("Password0!");
 
-        UsersEntity users = em.find(UsersEntity.class, userPK);
-        message = "User is " + users.getUserPK().getFirstname() + " " + users.getUserPK().getLastname();
+        RoleEntity role = new RoleEntity();
+        role.setName("ADMIN");
+
+        UsersEntity user = new UsersEntity();
+        user.setLogin("Tzoreol");
+        user.setPassword(password);
+        user.setRole(role);
+
+        MesssageEntity messsage = new MesssageEntity();
+        messsage.setUser(user);
+        messsage.setMessage("Hello, world!");
+
+        em.getTransaction().begin();
+        em.persist(password);
+        em.persist(role);
+        em.persist(user);
+        em.persist(messsage);
+        em.getTransaction().commit();
 
         // Hello
         PrintWriter out = response.getWriter();
