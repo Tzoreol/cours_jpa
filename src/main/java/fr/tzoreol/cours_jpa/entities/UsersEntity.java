@@ -4,27 +4,15 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-@IdClass(UserPK.class)
 public class UsersEntity {
-    @Id
-    private String firstname;
+    @EmbeddedId
+    UserPK userPK;
 
-    @Id
-    private String lastname;
-
-    public String getFirstname() {
-        return firstname;
+    public UserPK getUserPK() {
+        return userPK;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setUserPK(UserPK userPK) {
+        this.userPK = userPK;
     }
 }

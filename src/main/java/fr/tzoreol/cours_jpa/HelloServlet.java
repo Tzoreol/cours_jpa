@@ -26,11 +26,11 @@ public class HelloServlet extends HttpServlet {
         EntityManager em = emf.createEntityManager();
 
         UserPK userPK = new UserPK();
-        userPK.setFirstname("Bob");
-        userPK.setLastname("Barker");
+        userPK.setFirstname("Alice");
+        userPK.setLastname("Adams");
 
         UsersEntity users = em.find(UsersEntity.class, userPK);
-        message = "User is " + users.getFirstname() + " " + users.getLastname();
+        message = "User is " + users.getUserPK().getFirstname() + " " + users.getUserPK().getLastname();
 
         // Hello
         PrintWriter out = response.getWriter();
