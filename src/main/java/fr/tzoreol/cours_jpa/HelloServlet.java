@@ -26,32 +26,20 @@ public class HelloServlet extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
-        PasswordEntity password = new PasswordEntity();
-        password.setPassword("Password0!");
-
-        RoleEntity role = new RoleEntity();
-        role.setName("ADMIN");
-
-        UsersEntity user = new UsersEntity();
-        user.setLogin("Tzoreol");
-        user.setPassword(password);
-        user.setRole(role);
-
-        MesssageEntity messsage = new MesssageEntity();
-        messsage.setUser(user);
-        messsage.setMessage("Hello, world!");
-
-        em.getTransaction().begin();
-        em.persist(password);
-        em.persist(role);
-        em.persist(user);
-        em.persist(messsage);
-        em.getTransaction().commit();
+        UsersEntity user = em.find(UsersEntity.class, "Tzoreol");
 
         // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h1> Username: " + message + "</h1>");
+        out.println("<h1>" + user.getLogin() + " </h1>");
+        out.println("<h2>" + user.getRole().getName() + " </h2>");
+        out.println("<h2>" + user.getPassword().getPassword() + " </h2>");
+        out.println("<h3>" + user.getMessages().size() + " messages</h3>");
+        out.println("<ul>");
+        for(MesssageEntity message : user.getMessages()) {
+            out.println("<li>" + message.getMessage() + "</li>");
+        }
+        out.println("</ul>");
         out.println("</body></html>");
     }
 
