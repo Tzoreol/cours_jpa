@@ -2,10 +2,11 @@ package fr.tzoreol.cours_jpa;
 
 import fr.tzoreol.cours_jpa.entities.MesssageEntity;
 import fr.tzoreol.cours_jpa.entities.PasswordEntity;
-import fr.tzoreol.cours_jpa.entities.RoleEntity;
 import fr.tzoreol.cours_jpa.entities.UsersEntity;
+import fr.tzoreol.cours_jpa.enums.Role;
 
 import java.io.*;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -26,20 +27,28 @@ public class HelloServlet extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
-        UsersEntity user = em.find(UsersEntity.class, "Tzoreol");
+        PasswordEntity password = new PasswordEntity();
+        password.setPassword("Password0!");
+
+        UsersEntity user = new UsersEntity();
+        user.setLogin("Tzoreol");
+        user.setPassword(password);
+        user.setRole(Role.USER);
+
+        MesssageEntity messsage = new MesssageEntity();
+        messsage.setMessage("Hello, world!");
+        messsage.setUser(user);
+        messsage.setTime(new Date());
+
+        em.getTransaction().begin();
+        em.persist(password);
+        em.persist(user);
+        em.persist(messsage);
+        em.getTransaction().commit();
 
         // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h1>" + user.getLogin() + " </h1>");
-        out.println("<h2>" + user.getRole().getName() + " </h2>");
-        out.println("<h2>" + user.getPassword().getPassword() + " </h2>");
-        out.println("<h3>" + user.getMessages().size() + " messages</h3>");
-        out.println("<ul>");
-        for(MesssageEntity message : user.getMessages()) {
-            out.println("<li>" + message.getMessage() + "</li>");
-        }
-        out.println("</ul>");
         out.println("</body></html>");
     }
 

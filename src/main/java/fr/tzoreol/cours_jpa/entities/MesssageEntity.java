@@ -1,6 +1,7 @@
 package fr.tzoreol.cours_jpa.entities;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "messages")
@@ -14,6 +15,9 @@ public class MesssageEntity {
 
     @Column(name = "message")
     private String message;
+
+    @Temporal(TemporalType.TIME)
+    private Date time;
 
     public long getMessageId() {
         return messageId;
@@ -37,5 +41,13 @@ public class MesssageEntity {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

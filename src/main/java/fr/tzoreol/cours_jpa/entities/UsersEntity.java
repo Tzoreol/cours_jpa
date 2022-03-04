@@ -1,5 +1,7 @@
 package fr.tzoreol.cours_jpa.entities;
 
+import fr.tzoreol.cours_jpa.enums.Role;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,9 +14,8 @@ public class UsersEntity {
     @OneToOne
     private PasswordEntity password;
 
-    @ManyToOne
-    @JoinColumn(name = "role")
-    RoleEntity role;
+    @Enumerated
+    private Role role;
 
     @OneToMany
     @JoinColumn(name = "user")
@@ -36,11 +37,11 @@ public class UsersEntity {
         this.password = password;
     }
 
-    public RoleEntity getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(RoleEntity role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
