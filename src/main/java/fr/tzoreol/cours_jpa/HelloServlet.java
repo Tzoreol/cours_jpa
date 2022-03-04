@@ -1,5 +1,6 @@
 package fr.tzoreol.cours_jpa;
 
+import fr.tzoreol.cours_jpa.entities.UserPK;
 import fr.tzoreol.cours_jpa.entities.UsersEntity;
 
 import java.io.*;
@@ -23,6 +24,13 @@ public class HelloServlet extends HttpServlet {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
+
+        UserPK userPK = new UserPK();
+        userPK.setFirstname("Bob");
+        userPK.setLastname("Barker");
+
+        UsersEntity users = em.find(UsersEntity.class, userPK);
+        message = "User is " + users.getFirstname() + " " + users.getLastname();
 
         // Hello
         PrintWriter out = response.getWriter();

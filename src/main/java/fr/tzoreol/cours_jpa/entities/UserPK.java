@@ -1,15 +1,9 @@
 package fr.tzoreol.cours_jpa.entities;
 
-import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "users")
-@IdClass(UserPK.class)
-public class UsersEntity {
-    @Id
+public class UserPK implements Serializable {
     private String firstname;
-
-    @Id
     private String lastname;
 
     public String getFirstname() {
