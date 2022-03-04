@@ -1,9 +1,7 @@
 package fr.tzoreol.cours_jpa;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
@@ -22,10 +20,15 @@ public class HelloServlet extends HttpServlet {
 
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl, "root", "Password0!");
-            message = connection.isClosed() ? "Closed" : "Open";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+
+            while(resultSet.next()) {
+                this.message = resultSet.getString(1);
+            }
             connection.close();
         } catch (SQLException e) {
-            message = "Error";
+            message = "Error: " + e.getMessage();
         }
         // Hello
         PrintWriter out = response.getWriter();
