@@ -24,8 +24,12 @@ public class HelloServlet extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
-        UsersEntity user = em.createQuery("SELECT u FROM UsersEntity u", UsersEntity.class).getSingleResult();
-        this.message = user.getUsername();
+       UsersEntity user = new UsersEntity();
+       user.setUsername("Test2");
+
+       em.getTransaction().begin();
+       em.persist(user);
+       em.getTransaction().commit();
 
         // Hello
         PrintWriter out = response.getWriter();
