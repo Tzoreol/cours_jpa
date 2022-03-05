@@ -7,9 +7,11 @@ import fr.tzoreol.cours_jpa.enums.Role;
 
 import java.io.*;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
@@ -27,28 +29,18 @@ public class HelloServlet extends HttpServlet {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
 
-        PasswordEntity password = new PasswordEntity();
-        password.setPassword("Password0!");
+        Query query = em.createNamedQuery("fr.tzoreol.entities.Users.getUsersAndMessages");
+        query.setParameter("login", "Tzoreol");
 
-        UsersEntity user = new UsersEntity();
-        user.setLogin("Tzoreol");
-        user.setPassword(password);
-        user.setRole(Role.USER);
+        List results = query.getResultList();
 
-        MesssageEntity messsage = new MesssageEntity();
-        messsage.setMessage("Hello, world!");
-        messsage.setUser(user);
-        messsage.setTime(new Date());
-
-        em.getTransaction().begin();
-        em.persist(password);
-        em.persist(user);
-        em.persist(messsage);
-        em.getTransaction().commit();
-
-        // Hello
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
+        out.println("<ul>");
+
+        results.forEach(l -> out.println("<li>" + l.getClass().toString() + "</li>"));
+
+        out.println("</ul>");
         out.println("</body></html>");
     }
 

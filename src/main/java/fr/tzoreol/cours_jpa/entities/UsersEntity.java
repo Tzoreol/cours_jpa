@@ -7,6 +7,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@NamedQueries({
+        @NamedQuery(name = "fr.tzoreol.entities.Users.getUsersAndMessages", query = "SELECT u FROM UsersEntity u INNER JOIN u.messages m WHERE m.user.login = :login")
+})
 public class UsersEntity {
     @Id
     String login;
